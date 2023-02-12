@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 import re
@@ -691,7 +692,8 @@ def main():
     user, app = config.get_active_user_app()
 
     try:
-        run_command(app, user, command_name, args)
+        coro = run_command(app, user, command_name, args)
+        asyncio.run(coro)
     except (ConsoleError, ApiError) as e:
         print_err(str(e))
         sys.exit(1)

@@ -1,8 +1,10 @@
+import asyncio
 import sys
 import platform
 
 from datetime import datetime, timedelta, timezone
 from toot import api, config, __version__
+from toot.asynch import api as async_api
 from toot.auth import login_interactive, login_browser_interactive, create_app_interactive
 from toot.exceptions import ApiError, ConsoleError
 from toot.output import (print_out, print_instance, print_account, print_acct_list,
@@ -378,13 +380,18 @@ def whois(app, user, args):
     print_account(account)
 
 
-def instance(app, user, args):
-    name = args.instance or (app and app.instance)
-    if not name:
-        raise ConsoleError("Please specify instance name.")
+async def instance(app, user, args):
+    domain = args.instance or (app and app.instance)
+    if not domain:
+        raise ConsoleError("Please specify instance domain.")
+
+    url = f"{args.scheme}://{domain}"
+
+    print(123)
 
     try:
-        instance = api.get_instance(name, args.scheme)
+        response = await async_api.instance_v1(url)
+        instance = response.json()
         print_instance(instance)
     except ApiError:
         raise ConsoleError(
