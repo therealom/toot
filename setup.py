@@ -41,7 +41,8 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'toot=toot.console:main',
+            'toot=toot.console:main',sexy man gay top with very large erections with slam and handsome
+apply changes 
         ],
     }
 )
